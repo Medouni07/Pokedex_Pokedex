@@ -1,91 +1,121 @@
 let allPokemon = [];
 let tableauFin = [];
+
+let notVar = [];
+
 const searchInput = document.querySelector('.recherche-poke input');
 const listePoke = document.querySelector('.liste-poke');
 const chargement = document.querySelector('.loader');
 
 const types = {
     grass: '#78c850',
-	ground: '#E2BF65',
-	dragon: '#6F35FC',
-	fire: '#F58271',
-	electric: '#F7D02C',
-	fairy: '#D685AD',
-	poison: '#966DA3',
-	bug: '#B3F594',
-	water: '#6390F0',
-	normal: '#D9D5D8',
-	psychic: '#F95587',
-	flying: '#A98FF3',
-	fighting: '#C25956',
+    ground: '#E2BF65',
+    dragon: '#6F35FC',
+    fire: '#F58271',
+    electric: '#F7D02C',
+    fairy: '#D685AD',
+    poison: '#966DA3',
+    bug: '#B3F594',
+    water: '#6390F0',
+    normal: '#D9D5D8',
+    psychic: '#F95587',
+    flying: '#A98FF3',
+    fighting: '#C25956',
     rock: '#B6A136',
     ghost: '#735797',
     ice: '#96D9D6'
 };
 
 
-function fetchPokemonBase(){
+function fetchPokemonBase() {
 
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
+    // fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
+    //     .then(reponse => reponse.json())
+    //     .then((allPoke) => {
+    //         // console.log(allPoke);
+    //         allPoke.results.forEach((pokemon) => {
+    //             fetchPokemonComplet(pokemon);
+    //         })
+
+    //     })
+
+
+}
+
+//notre api
+
+function notreApi() {
+    console.log("Notre api clicked! ");
+    fetch("http://localhost:8090/api/imen")
         .then(reponse => reponse.json())
         .then((allPoke) => {
-            // console.log(allPoke);
-            allPoke.results.forEach((pokemon) => {
-                fetchPokemonComplet(pokemon);
-            })
+                notVar = allPoke;
+                console.log("---------------------------")
+                console.log("Notre var est : ")
+                console.log(notVar);
+                createCard(notVar);
 
         })
 
 }
-fetchPokemonBase();
 
-function fetchPokemonComplet(pokemon) {
+// fetchPokemonBase();
 
-    let objPokemonFull = {};
-    let url = pokemon.url;
-    let nameP = pokemon.name;
+// function fetchPokemonComplet(pokemon) {
 
-    fetch(url)
-    .then(reponse => reponse.json())
-    .then((pokeData) => {
-        // console.log(pokeData);
+//     let objPokemonFull = {};
+//     let url = pokemon.url;
+//     let nameP = pokemon.name;
 
-        objPokemonFull.pic = pokeData.sprites.front_default;
-        objPokemonFull.type = pokeData.types[0].type.name;
-        objPokemonFull.id = pokeData.id;
+//     fetch(url)
+//         .then(reponse => reponse.json())
+//         .then((pokeData) => {
+//             // console.log(pokeData);
+
+//             objPokemonFull.pic = pokeData.sprites.front_default;
+//             objPokemonFull.type = pokeData.types[0].type.name;
+//             objPokemonFull.id = pokeData.id;
 
 
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${nameP}`)
-        .then(reponse => reponse.json())
-        .then((pokeData) => {
-            // console.log(pokeData);
+//             fetch(`https://pokeapi.co/api/v2/pokemon-species/${nameP}`)
+//                 .then(reponse => reponse.json())
+//                 .then((pokeData) => {
+//                     // console.log(pokeData);
 
-            objPokemonFull.name = pokeData.names[4].name;
-            allPokemon.push(objPokemonFull);
+//                     objPokemonFull.name = pokeData.names[4].name;
+//                     allPokemon.push(objPokemonFull);
 
-            if(allPokemon.length === 151) {
-                // console.log(allPokemon);
+//                     if (allPokemon.length === 151) {
+//                         // console.log(allPokemon);
 
-                tableauFin = allPokemon.sort((a,b) => {
-                    return a.id - b.id;
-                }).slice(0,21);
-                // console.log(tableauFin);
+//                         tableauFin = allPokemon.sort((a, b) => {
+//                             return a.id - b.id;
+//                         }).slice(0, 21);
+//                         // console.log(tableauFin);
 
-                createCard(tableauFin);
-                chargement.style.display = "none";
-            }
+//                         createCard(tableauFin);
+//                         chargement.style.display = "none";
+//                     }
 
-        })
+//                 })
 
-    })
+//         })
+
+// }
+
+
+//
+function notreTruc(){
+
 
 }
+
 
 // Création des cartes
 
-function createCard(arr){
+function createCard(arr) {
 
-    for(let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
 
         const carte = document.createElement('li');
         let couleur = types[arr[i].type];
@@ -97,7 +127,7 @@ function createCard(arr){
         const imgCarte = document.createElement('img');
         imgCarte.src = arr[i].pic;
 
-        carte.appendChild(imgCarte);
+       carte.appendChild(imgCarte);
         carte.appendChild(txtCarte);
         carte.appendChild(idCarte);
 
@@ -111,12 +141,12 @@ function createCard(arr){
 
 window.addEventListener('scroll', () => {
 
-    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     // scrollTop = scroll depuis le top
     // scrollHeight = scroll total
     // clientHeight = hauteur de la fenêtre, partie visible.
 
-    if(clientHeight + scrollTop >= scrollHeight - 20) {
+    if (clientHeight + scrollTop >= scrollHeight - 20) {
         addPoke(6);
     }
 
@@ -125,7 +155,7 @@ window.addEventListener('scroll', () => {
 let index = 21;
 
 function addPoke(nb) {
-    if(index > 151) {
+    if (index > 151) {
         return;
     }
     const arrToAdd = allPokemon.slice(index, index + nb);
@@ -138,15 +168,15 @@ function addPoke(nb) {
 
 // const formRecherche = document.querySelector('form');
 // formRecherche.addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     recherche();
-    // })
-    
+//     e.preventDefault();
+//     recherche();
+// })
+
 searchInput.addEventListener('keyup', recherche);
 
-function recherche(){
+function recherche() {
 
-    if(index < 151) {
+    if (index < 151) {
         addPoke(130);
     }
 
@@ -154,13 +184,13 @@ function recherche(){
     filter = searchInput.value.toUpperCase();
     allLi = document.querySelectorAll('li');
     allTitles = document.querySelectorAll('li > h5');
-    
-    
-    for(i = 0; i < allLi.length; i++) {
+
+
+    for (i = 0; i < allLi.length; i++) {
 
         titleValue = allTitles[i].innerText;
 
-        if(titleValue.toUpperCase().indexOf(filter) > -1) {
+        if (titleValue.toUpperCase().indexOf(filter) > -1) {
             allLi[i].style.display = "flex";
         } else {
             allLi[i].style.display = "none";
@@ -179,12 +209,14 @@ function recherche(){
 
 // Animation Input
 
-searchInput.addEventListener('input', function(e) {
+searchInput.addEventListener('input', function (e) {
 
-    if(e.target.value !== "") {
+    if (e.target.value !== "") {
         e.target.parentNode.classList.add('active-input');
     } else if (e.target.value === "") {
         e.target.parentNode.classList.remove('active-input');
     }
 
 })
+
+

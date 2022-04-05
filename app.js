@@ -7,7 +7,8 @@ const searchInput = document.querySelector('.recherche-poke input');
 const listePoke = document.querySelector('.liste-poke');
 const chargement = document.querySelector('.loader');
 
-const types = {
+/*
+const typses = {
     grass: '#78c850',
     ground: '#E2BF65',
     dragon: '#6F35FC',
@@ -24,8 +25,10 @@ const types = {
     rock: '#B6A136',
     ghost: '#735797',
     ice: '#96D9D6'
-};
-
+}; */ 
+const types = ['#78c850', '#E2BF65', '#6F35FC', '#F58271', '#F58271', '#F7D02C', '#D685AD', '#966DA3', '#B3F594',
+'#6390F0', '#D9D5D8', '#F95587', '#A98FF3', '#C25956', '#B6A136', '#735797', '#96D9D6'
+]
 
 function fetchPokemonBase() {
 
@@ -46,7 +49,8 @@ function fetchPokemonBase() {
 
 function notreApi() {
     console.log("Notre api clicked! ");
-    fetch("http://localhost:8090/api/imen")
+    fetch("http://localhost:8080/api/pokemon/all")
+    
         .then(reponse => reponse.json())
         .then((allPoke) => {
                 notVar = allPoke;
@@ -58,6 +62,9 @@ function notreApi() {
         })
 
 }
+
+
+ notreApi();
 
 // fetchPokemonBase();
 
@@ -113,12 +120,19 @@ function notreTruc(){
 
 // Création des cartes
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 function createCard(arr) {
 
     for (let i = 0; i < arr.length; i++) {
 
         const carte = document.createElement('li');
-        let couleur = types[arr[i].type];
+       // let couleur = types[arr[i].type];
+       let couleur = types[getRandomInt(17)];
+       //console.log("The coulor is : " + couleur )
+
         carte.style.background = couleur;
         const txtCarte = document.createElement('h5');
         txtCarte.innerText = arr[i].name;
@@ -127,7 +141,7 @@ function createCard(arr) {
         const imgCarte = document.createElement('img');
         imgCarte.src = arr[i].pic;
 
-       carte.appendChild(imgCarte);
+      // carte.appendChild(imgCarte);
         carte.appendChild(txtCarte);
         carte.appendChild(idCarte);
 

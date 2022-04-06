@@ -7,8 +7,8 @@ const searchInput = document.querySelector('.recherche-poke input');
 const listePoke = document.querySelector('.liste-poke');
 const chargement = document.querySelector('.loader');
 
-/*
-const typses = {
+
+const types = {
     grass: '#78c850',
     ground: '#E2BF65',
     dragon: '#6F35FC',
@@ -25,94 +25,147 @@ const typses = {
     rock: '#B6A136',
     ghost: '#735797',
     ice: '#96D9D6'
-}; */ 
-const types = ['#78c850', '#E2BF65', '#6F35FC', '#F58271', '#F58271', '#F7D02C', '#D685AD', '#966DA3', '#B3F594',
-'#6390F0', '#D9D5D8', '#F95587', '#A98FF3', '#C25956', '#B6A136', '#735797', '#96D9D6'
-]
+};
+// const types = ['#78c850', '#E2BF65', '#6F35FC', '#F58271', '#F58271', '#F7D02C', '#D685AD', '#966DA3', '#B3F594',
+// '#6390F0', '#D9D5D8', '#F95587', '#A98FF3', '#C25956', '#B6A136', '#735797', '#96D9D6'
+// ]
 
-function fetchPokemonBase() {
-
-    // fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-    //     .then(reponse => reponse.json())
-    //     .then((allPoke) => {
-    //         // console.log(allPoke);
-    //         allPoke.results.forEach((pokemon) => {
-    //             fetchPokemonComplet(pokemon);
-    //         })
-
-    //     })
-
-
-}
-
-//notre api
 
 function notreApi() {
     console.log("Notre api clicked! ");
-    fetch("http://localhost:8080/api/pokemon/all")
-    
+    fetch("http://localhost:3333/api/pokemon/all")
+
         .then(reponse => reponse.json())
         .then((allPoke) => {
-                notVar = allPoke;
-                console.log("---------------------------")
-                console.log("Notre var est : ")
-                console.log(notVar);
-                createCard(notVar);
+            notVar = allPoke;
+            console.log("---------------------------")
+            console.log("Notre var est : ")
+            console.log(notVar);
+
+            notVar.forEach((pokemon) => {
+                fetchPokemonBase(pokemon.number);
+            });
 
         })
 
 }
 
 
- notreApi();
 
-// fetchPokemonBase();
+function fetchPokemonBase(id) {
 
-// function fetchPokemonComplet(pokemon) {
+    console.log("FetchPokemonBase")
+    fetch("https://pokeapi.co/api/v2/pokemon/" + id)
+        .then(reponse => reponse.json())
+        .then((allPoke) => {
+             console.log(allPoke.forms[0]);
+             fetchPokemonComplet(allPoke.forms[0]);
+            // allPoke.results.forEach((pokemon) => {
+            //     fetchPokemonComplet(allPoke.forms[0]);
+            // })
 
-//     let objPokemonFull = {};
-//     let url = pokemon.url;
-//     let nameP = pokemon.name;
+        })
 
-//     fetch(url)
+
+}
+// function fetchPokemonBase() {
+
+//     fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
 //         .then(reponse => reponse.json())
-//         .then((pokeData) => {
-//             // console.log(pokeData);
+//         .then((allPoke) => {
+//             console.log(allPoke);
+//             allPoke.results.forEach((pokemon) => {
+//                 fetchPokemonComplet(pokemon);
+//             })
 
-//             objPokemonFull.pic = pokeData.sprites.front_default;
-//             objPokemonFull.type = pokeData.types[0].type.name;
-//             objPokemonFull.id = pokeData.id;
+//         })
+//  }
 
+//notre api
 
-//             fetch(`https://pokeapi.co/api/v2/pokemon-species/${nameP}`)
-//                 .then(reponse => reponse.json())
-//                 .then((pokeData) => {
-//                     // console.log(pokeData);
+// function notreApi() {
+//     console.log("Notre api clicked! ");
+//     fetch("http://localhost:3333/api/pokemon/all")
 
-//                     objPokemonFull.name = pokeData.names[4].name;
-//                     allPokemon.push(objPokemonFull);
-
-//                     if (allPokemon.length === 151) {
-//                         // console.log(allPokemon);
-
-//                         tableauFin = allPokemon.sort((a, b) => {
-//                             return a.id - b.id;
-//                         }).slice(0, 21);
-//                         // console.log(tableauFin);
-
-//                         createCard(tableauFin);
-//                         chargement.style.display = "none";
-//                     }
-
-//                 })
+//         .then(reponse => reponse.json())
+//         .then((allPoke) => {
+//             notVar = allPoke;
+//             console.log("---------------------------")
+//             console.log("Notre var est : ")
+//             console.log(notVar);
+//             createCard(notVar);
+//                 notVar.forEach((pokemon) => {
+//                     console.log(pokemon);
+//                 });
 
 //         })
 
 // }
 
 
-//
-function notreTruc(){
+
+// function  testApiFrançais(){
+//     console.log("Api français res ")
+//     fetch(`https://pokeapi.co/api/v2/pokemon/1`)
+//                 .then(reponse => reponse.json())
+//                 .then((pokeData) => {
+//                  console.log(pokeData);
+//                 })
+// }
+
+//testApiFrançais();
+
+notreApi();
+
+//fetchPokemonBase(25);
+//fetchPokemonBase()
+function fetchPokemonComplet(pokemon) {
+
+    let objPokemonFull = {};
+    let url = pokemon.url;
+    let nameP = pokemon.name;
+
+    fetch(url)
+        .then(reponse => reponse.json())
+        .then((pokeData) => {
+            // console.log(pokeData);
+
+            objPokemonFull.pic = pokeData.sprites.front_default;
+            objPokemonFull.type = pokeData.types[0].type.name;
+            objPokemonFull.id = pokeData.id;
+
+
+            fetch(`https://pokeapi.co/api/v2/pokemon-species/${nameP}`)
+                .then(reponse => reponse.json())
+                .then((pokeData) => {
+                    // console.log(pokeData);
+
+                    objPokemonFull.name = pokeData.names[4].name;
+                    allPokemon.push(objPokemonFull);
+
+                    if (allPokemon.length === 151) {
+                        // console.log(allPokemon);
+
+                        tableauFin = allPokemon.sort((a, b) => {
+                            return a.id - b.id;
+                        }).slice(0, 21);
+                        // console.log(tableauFin);
+
+                        createCard(tableauFin);
+                        chargement.style.display = "none";
+                    }
+
+                })
+
+        })
+
+}
+
+
+
+
+
+function notreTruc() {
 
 
 }
@@ -121,7 +174,7 @@ function notreTruc(){
 // Création des cartes
 
 function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max);
 }
 
 function createCard(arr) {
@@ -129,9 +182,9 @@ function createCard(arr) {
     for (let i = 0; i < arr.length; i++) {
 
         const carte = document.createElement('li');
-       // let couleur = types[arr[i].type];
-       let couleur = types[getRandomInt(17)];
-       //console.log("The coulor is : " + couleur )
+        let couleur = types[arr[i].type];
+        //let couleur = types[getRandomInt(17)];
+        //console.log("The coulor is : " + couleur )
 
         carte.style.background = couleur;
         const txtCarte = document.createElement('h5');
@@ -141,7 +194,7 @@ function createCard(arr) {
         const imgCarte = document.createElement('img');
         imgCarte.src = arr[i].pic;
 
-      // carte.appendChild(imgCarte);
+        carte.appendChild(imgCarte);
         carte.appendChild(txtCarte);
         carte.appendChild(idCarte);
 

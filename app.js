@@ -68,57 +68,15 @@ function fetchPokemonBase(id) {
 
 
 }
-// function fetchPokemonBase() {
-
-//     fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-//         .then(reponse => reponse.json())
-//         .then((allPoke) => {
-//             console.log(allPoke);
-//             allPoke.results.forEach((pokemon) => {
-//                 fetchPokemonComplet(pokemon);
-//             })
-
-//         })
-//  }
-
-//notre api
-
-// function notreApi() {
-//     console.log("Notre api clicked! ");
-//     fetch("http://localhost:3333/api/pokemon/all")
-
-//         .then(reponse => reponse.json())
-//         .then((allPoke) => {
-//             notVar = allPoke;
-//             console.log("---------------------------")
-//             console.log("Notre var est : ")
-//             console.log(notVar);
-//             createCard(notVar);
-//                 notVar.forEach((pokemon) => {
-//                     console.log(pokemon);
-//                 });
-
-//         })
-
-// }
 
 
 
-// function  testApiFrançais(){
-//     console.log("Api français res ")
-//     fetch(`https://pokeapi.co/api/v2/pokemon/1`)
-//                 .then(reponse => reponse.json())
-//                 .then((pokeData) => {
-//                  console.log(pokeData);
-//                 })
-// }
 
-//testApiFrançais();
+
+
 
 notreApi();
 
-//fetchPokemonBase(25);
-//fetchPokemonBase()
 function fetchPokemonComplet(pokemon) {
 
     let objPokemonFull = {};
@@ -183,9 +141,6 @@ function createCard(arr) {
 
         const carte = document.createElement('li');
         let couleur = types[arr[i].type];
-        //let couleur = types[getRandomInt(17)];
-        //console.log("The coulor is : " + couleur )
-
         carte.style.background = couleur;
         const txtCarte = document.createElement('h5');
         txtCarte.innerText = arr[i].name;
